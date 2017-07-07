@@ -26,7 +26,7 @@ net.makeLayers(layers);
 let trainer = new convnetjs.Trainer(net, {method: 'adadelta', l2_decay: 0.001,
                                     batch_size: 20});
                                     
-let labels = ['0'];//,'1','2','3','4','5','6','7','8','9'];
+let labels = ['0','1','2','3','4','5','6','7','8','9'];
 
 for(let label of labels) {
     const training = require('./digits/' + label + '.json');
@@ -46,29 +46,30 @@ for(let label of labels) {
             trainer.train(image, label);
             console.log('Training Image ' + (curImage++) + ' for Label ' + label);
             
-            let png = new Jimp(dim, dim, function (err, png) {
-              if (err) throw err;
-              
-              let arr = ndarray(new Float64Array(points), [dim,dim]);
-              let nx = arr.shape[0], 
-                  ny = arr.shape[1];
+            if(curImage%1000 == 0){
+                let png = new Jimp(dim, dim, function (err, png) {
+                  if (err) throw err;
+                  
+                  let arr = ndarray(new Float64Array(points), [dim,dim]);
+                  let nx = arr.shape[0], 
+                      ny = arr.shape[1];
 
-              for(var i=1; i<nx-1; ++i) {
-                for(var j=1; j<ny-1; ++j) {
-                    let value = arr.get(i, j);
-                    let nrmValue = Math.round(value * 255);
-                    let hex = parseInt(rgbToHex(nrmValue, 0, 0), 16);
-                    png.setPixelColor(hex, i, j);
-                }
-              }
-              let fileName = 'out/test_' + curImage + '_' + label + '.png';
+                  for(var i=1; i<nx-1; ++i) {
+                    for(var j=1; j<ny-1; ++j) {
+                        let value = arr.get(i, j);
+                        let nrmValue = parseInt(Math.round(value * 255));
+                        let hex = Jimp.rgbaToInt(nrmValue, 0, 0, 1);
+                        png.setPixelColor(hex, i, j);
+                    }
+                  }
+                  let fileName = 'out/test_' + curImage + '_' + label + '.bmp';
 
-              png.write(fileName, (err) => {
-                if (err) throw err;
-                else console.log('Wrote ' + fileName);
-              });
-            });
-            
+                  png.write(fileName, (err) => {
+                    if (err) throw err;
+                    else console.log('Wrote ' + fileName);
+                  });
+                });
+            }
             
             curPixel = 1;
             points = [];
@@ -76,7 +77,7 @@ for(let label of labels) {
     }
 
 }     
-/*
+
 for(let label of labels) {
     const testing = require('./digits-test/' + label + '.json');
 
@@ -101,16 +102,7 @@ for(let label of labels) {
     }
 
 }              
-*/
 
-function rgbToHex(R,G,B) {return toHex(R)+toHex(G)+toHex(B)}
-function toHex(n) {
- n = parseInt(n,10);
- if (isNaN(n)) return "00";
- n = Math.max(0,Math.min(n,255));
- return "0123456789ABCDEF".charAt((n-n%16)/16)
-      + "0123456789ABCDEF".charAt(n%16);
-}                 
 
 
 
