@@ -1,0 +1,23 @@
+{
+  "name": "convnet-poc",
+  "version": "1.0.0",
+  "description": "convnet POC\u001b[D\u001b[D\u001b[D\u001b[DJS\u001b[D\u001b[D\u001b[C\u001b[C POC\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[C\u001b[C\u001b[C",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "convnetjs",
+    "cnn"
+  ],
+  "author": "rbrown",
+  "license": "ISC",
+  "dependencies": {
+    "convnetjs": "^0.3.0",
+    "jimp": "^0.2.28",
+    "mnist_dl": "^1.0.0",
+    "ndarray": "^1.0.18",
+    "ndarray-imshow": "^1.0.1"
+  }
+}
